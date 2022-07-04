@@ -1,0 +1,15 @@
+{% extends "blogs/base.html" %}
+{% block page_header %}
+    <div class="jumbotron">
+        <h1 class="display-3">Welcome!</h1>
+        <p class="lead">Make your own blog post here to record anything
+            from what you have learned, where you have traveled to, or 
+            what you have cooked! This is a great place to save everythin in
+            one place!
+        </p>
+        <a class="btn btn-sm btn-primary" href="{% url 'users:register' %}"
+            role="button">Register &raquo;</a>
+        <a class="btn btn-sm btn-primary" href="{% url 'users:login' %}"
+            role="button">Log in &raquo;</a>
+    </div>
+{% endblock page_header %}
