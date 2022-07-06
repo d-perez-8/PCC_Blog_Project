@@ -1,3 +1,4 @@
+from tabnanny import check
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
@@ -6,13 +7,13 @@ from blogs.models import BlogPost
 from blogs.forms import PostForm
 
 def index(request):
-    """For when users are not logged in"""
+    """For when users are not logged in."""
     return render(request, 'blogs/index.html')
 
 @login_required
 def homepage(request):
     """User's homepage."""
-    posts = BlogPost.objects.filter(owner=request.user).order_by('date_added')
+    posts = BlogPost.objects.filter(owner=request.user).order_by('-date_added')
     context = {'posts': posts}
     return render(request, 'blogs/homepage.html', context)
 
@@ -37,14 +38,14 @@ def new_post(request):
 
 @login_required
 def edit_post(request, post_id):
-    """Edit an existing blog post"""
+    """Edit an existing blog post."""
     post = get_object_or_404(BlogPost, id=post_id)
-    # Make sure the post belongs to the user
+    # Makes sure the post belongs to the user.
     check_post_owner(post.owner, request)
 
 
     if request.method != 'POST':
-        # Initail reqiest; pre-fill form with the current entry.
+        # Initail request; pre-fill form with the current entry.
         form = PostForm(instance=post)
     else:
         # POST data submitted; process data.
@@ -55,6 +56,20 @@ def edit_post(request, post_id):
     
     context = {'post': post, 'form': form}
     return render(request, 'blogs/edit_post.html', context)
+
+@login_required
+def delete_post(request, post_id):
+    """Delete an existing blog post."""
+    post = get_object_or_404(BlogPost, id=post_id)
+    # Makes sure the post belongs to the user.
+    check_post_owner(post.owner, request)
+
+    if request.method == 'POST':
+        post.delete()
+        return redirect('blogs:homepage')
+    
+    context = {"post": post}
+    return render(request, 'blogs/delete_post.html', context)
 
 def check_post_owner(owner, request):
     if owner != request.user:

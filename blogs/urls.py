@@ -16,4 +16,7 @@ urlpatterns = [
 
     # Page for edditing a post.
     path('edit_post/<int:post_id>/', views.edit_post, name='edit_post'),
+
+    # Page comfirming to deleting a post
+    path('delete_post/<int:post_id>/', views.delete_post, name='delete_post')
 ]

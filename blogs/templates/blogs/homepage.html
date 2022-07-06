@@ -23,9 +23,12 @@
             </div>
             <div class="card-body">
                 {{ post.text|linebreaks }}
-                <small><a href="{% url 'blogs:edit_post' post.id %}">
+                <small><a class="btn btn-outline-primary" href="{% url 'blogs:edit_post' post.id %}">
                     Edit</a></small>
+                <small><a class="btn btn-outline-danger" href="{% url 'blogs:delete_post' post.id %}">
+                    Delete</a></small>
             </div>
+        
         </div>
     {% empty %}
         <li>No blogs posts here</li>
